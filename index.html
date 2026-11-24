@@ -196,9 +196,88 @@
       transition: opacity 0.45s var(--ease-weighted), transform 0.55s var(--ease-weighted);
     }
 
-    .hero-copy-layer.is-switching {
+    .hero-copy-layer.is-fading {
       opacity: 0;
       transform: translate3d(0, 12px, 0);
+    }
+
+    /* Editorial Journal: Compact Focus + Context Horizontal Expansion */
+    .journal-fc-card {
+      position: relative;
+      transition: flex-grow 0.55s var(--ease-weighted),
+                  flex-basis 0.55s var(--ease-weighted),
+                  transform 0.45s var(--ease-weighted),
+                  opacity 0.4s var(--ease-weighted),
+                  border-color 0.35s var(--ease-weighted),
+                  box-shadow 0.45s var(--ease-weighted);
+      will-change: flex-grow, opacity, transform;
+    }
+
+    .journal-fc-card .fc-media {
+      transition: height 0.45s var(--ease-weighted), width 0.45s var(--ease-weighted), opacity 0.4s var(--ease-weighted);
+    }
+
+    .journal-fc-card .fc-expanded-detail {
+      display: none;
+    }
+
+    .journal-fc-card.is-focused .fc-expanded-detail {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .journal-fc-card.is-focused .fc-compact-cue {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .journal-fc-row {
+        display: flex;
+        align-items: stretch;
+        gap: 1rem;
+        min-height: 268px;
+      }
+
+      .journal-fc-card {
+        flex: 1 1 0%;
+        min-width: 0;
+      }
+
+      .journal-fc-card.is-focused {
+        flex: 2.55 1 0%;
+      }
+
+      .journal-fc-card.is-focused .fc-inner {
+        flex-direction: row;
+      }
+
+      .journal-fc-card.is-focused .fc-media {
+        width: 42%;
+        height: auto;
+        min-height: 240px;
+        border-right: 1px solid rgb(var(--rgb-obsidian));
+        border-bottom: 0;
+      }
+
+      .journal-fc-card.is-shrunk {
+        flex: 0.62 1 0%;
+        opacity: 0.78;
+      }
+
+      .journal-fc-card.is-shrunk .fc-media {
+        height: 76px;
+        opacity: 0.72;
+      }
+
+      .journal-fc-card.is-shrunk .fc-compact-cue,
+      .journal-fc-card.is-shrunk .fc-category-meta {
+        display: none;
+      }
+
+      .journal-fc-card.is-shrunk .fc-title {
+        font-size: 16px;
+        line-height: 1.24;
+      }
     }
 
     /* Product card hover-to-zoom & directional scroll rows */
@@ -551,7 +630,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="storefront-main">
     <!-- =======================================================================
          2. DYNAMIC KINETIC ATELIER HERO SHOWROOM (NON-BLOCKING KEN BURNS STAGE)
          ======================================================================= -->
@@ -875,26 +954,26 @@
     </section>
 
     <!-- =======================================================================
-         4A. THE ATELIER JOURNAL (12 RESEARCHED BRAND IDENTITY ESSAYS)
+         4A. THE ATELIER JOURNAL (COMPACT FOCUS + CONTEXT 12 FIELD NOTES)
          ======================================================================= -->
     <section id="journal" aria-labelledby="journal-heading" class="border-t border-obsidian bg-alabaster">
       <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-16 sm:py-24">
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-obsidian/20">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-obsidian/20">
           <div class="max-w-2xl">
             <p class="text-[11px] font-medium tracking-[0.18em] uppercase text-obsidian/60 mb-2">
-              THE ATELIER JOURNAL · 12 FIELD NOTES
+              THE ATELIER JOURNAL · 12 ILLUSTRATED FIELD NOTES
             </p>
             <h2 id="journal-heading" class="font-serif text-[34px] sm:text-[44px] leading-[1.08] font-normal text-obsidian text-balance">
               Cohesive Brand Design &amp; Studio Identity
             </h2>
           </div>
           <p class="text-[13px] leading-[1.65] text-obsidian/75 max-w-md">
-            Editorial research on visual consistency, pricing psychology, tactile materiality, and client experience architecture for independent studios.
+            Hover or click any compact study below to expand it in focus while neighboring cards recede—then open the full illustrated essay page.
           </p>
         </div>
 
         <!-- Blog Filter Tabs + Count -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-b border-obsidian/15 mb-10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-5 border-b border-obsidian/15 mb-8">
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar" role="tablist" aria-label="Journal categories">
             <button type="button" data-blog-filter="all" aria-selected="true" class="blog-filter-tab border border-obsidian px-4 py-2 text-[10px] font-medium tracking-[0.14em] uppercase bg-obsidian text-alabaster whitespace-nowrap shrink-0 min-h-[38px]">
               ALL ESSAYS (12)
@@ -910,15 +989,16 @@
             </button>
           </div>
           <span id="journal-showing-label" class="text-[11px] tracking-[0.14em] uppercase text-obsidian/65 tabular-nums whitespace-nowrap shrink-0">
-            SHOWING 3 OF 12 ESSAYS
+            SHOWING 4 OF 12 ESSAYS
           </span>
         </div>
 
-        <div id="journal-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Focus + Context Compact Rows Container -->
+        <div id="journal-grid" class="space-y-4">
           <!-- Populated dynamically by JS -->
         </div>
 
-        <div class="mt-10 flex justify-center">
+        <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
           <button
             id="journal-toggle-all-btn"
             type="button"
@@ -1087,6 +1167,88 @@
   </main>
 
   <!-- =======================================================================
+       SECONDARY PAGE: FULL-CONTEXT ILLUSTRATED JOURNAL READER VIEW
+       ======================================================================= -->
+  <section
+    id="journal-page-view"
+    aria-label="Atelier Journal Full Article"
+    class="hidden min-h-screen bg-alabaster text-obsidian pt-[76px] sm:pt-[84px]"
+  >
+    <!-- Fixed Full-Width Reading Progress Hairline beneath Header -->
+    <div class="fixed top-[76px] sm:top-[84px] left-0 right-0 h-[3px] bg-obsidian/15 z-30 pointer-events-none" aria-hidden="true">
+      <div id="journal-page-progress" class="h-full bg-champagne transition-[width] duration-75" style="width: 0%;"></div>
+    </div>
+
+    <!-- Top Breadcrumb & Essay Navigation Bar -->
+    <div class="border-b border-obsidian bg-taupe/20">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <button
+          id="journal-page-back-btn"
+          type="button"
+          class="inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.15em] uppercase text-obsidian hover:opacity-65 transition-opacity min-h-[38px]"
+        >
+          <span aria-hidden="true">←</span>
+          <span>BACK TO SHOWROOM</span>
+        </button>
+
+        <p id="journal-page-meta" class="text-[10px] sm:text-[11px] font-medium tracking-[0.16em] uppercase text-obsidian/65 tabular-nums">
+          ATELIER JOURNAL · ISSUE 01
+        </p>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="journal-page-prev-btn"
+            type="button"
+            class="border border-obsidian bg-alabaster px-3 py-1.5 text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian hover:bg-obsidian hover:text-alabaster transition-colors whitespace-nowrap min-h-[36px]"
+          >
+            ← PREV
+          </button>
+          <button
+            id="journal-page-index-btn"
+            type="button"
+            class="border border-obsidian bg-alabaster px-3 py-1.5 text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian hover:bg-obsidian hover:text-alabaster transition-colors whitespace-nowrap min-h-[36px]"
+          >
+            ALL 12 ISSUES
+          </button>
+          <button
+            id="journal-page-next-btn"
+            type="button"
+            class="border border-obsidian bg-alabaster px-3 py-1.5 text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian hover:bg-obsidian hover:text-alabaster transition-colors whitespace-nowrap min-h-[36px]"
+          >
+            NEXT →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expandable Full 12-Essay Directory Strip inside Secondary Page -->
+    <div id="journal-page-directory" class="hidden border-b border-obsidian bg-taupe/30">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-8">
+        <div class="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-obsidian/20">
+          <p class="text-[11px] font-medium tracking-[0.16em] uppercase text-obsidian">
+            COMPLETE ATELIER JOURNAL ARCHIVE (12 ISSUES)
+          </p>
+          <button
+            id="journal-page-directory-close"
+            type="button"
+            class="text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian/70 hover:text-obsidian border-b border-obsidian/40 pb-0.5"
+          >
+            HIDE INDEX ✕
+          </button>
+        </div>
+        <div id="journal-page-directory-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-Context Illustrated Editorial Body -->
+    <article id="journal-page-article" class="max-w-[1440px] mx-auto px-4 sm:px-8 py-12 sm:py-16">
+      <!-- Populated dynamically by JS -->
+    </article>
+  </section>
+
+  <!-- =======================================================================
        MINIMALIST ARCHITECTURAL FOOTER (UNCLUTTERED & SPACIOUS)
        ======================================================================= -->
   <footer class="site-footer">
@@ -1190,6 +1352,8 @@
                 id="newsletter-email"
                 type="email"
                 required
+                aria-invalid="false"
+                aria-describedby="newsletter-error"
                 placeholder="studio@yourdomain.com"
                 class="flex-1 bg-transparent text-[#EDE7DE] placeholder:text-[#EDE7DE]/40 px-3.5 py-3 text-[13px] focus:outline-none min-w-0"
               />
@@ -1200,7 +1364,7 @@
                 SUBSCRIBE
               </button>
             </div>
-            <p id="newsletter-error" class="hidden text-[12px] text-[#C5B396]"></p>
+            <p id="newsletter-error" role="alert" class="hidden text-[12px] text-[#C5B396]"></p>
           </form>
         </div>
       </div>
@@ -1337,14 +1501,14 @@
                   required
                   maxlength="40"
                   placeholder="Your Name (e.g. Elena V.)"
-                  class="border border-obsidian/50 px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian"
+                  class="border border-obsidian/50 bg-alabaster px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian"
                 />
                 <input
                   id="qv-rev-studio"
                   type="text"
                   maxlength="45"
                   placeholder="Studio Name (e.g. Velvet Lash)"
-                  class="border border-obsidian/50 px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian"
+                  class="border border-obsidian/50 bg-alabaster px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian"
                 />
               </div>
               <div class="flex items-center justify-between gap-3">
@@ -1360,7 +1524,7 @@
                 required
                 maxlength="220"
                 placeholder="Share how this piece performs in your studio..."
-                class="w-full border border-obsidian/50 px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian resize-none"
+                class="w-full border border-obsidian/50 bg-alabaster px-2.5 py-2 text-[12px] text-obsidian focus:outline-none focus:border-obsidian resize-none"
               ></textarea>
               <button type="submit" class="w-full bg-obsidian text-alabaster py-2 text-[10px] font-medium tracking-[0.14em] uppercase hover:bg-[#2a2a2a] transition-colors">
                 SUBMIT REVIEW
@@ -1661,13 +1825,18 @@
       <!-- Lookup Form -->
       <form id="track-order-form" class="space-y-4">
         <div>
-          <div class="flex items-center justify-between mb-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
             <label for="track-order-input" class="text-[11px] font-medium tracking-[0.14em] uppercase text-obsidian">
               ORDER REFERENCE ID
             </label>
-            <button type="button" id="track-sample-btn" class="text-[11px] text-obsidian/70 hover:text-obsidian underline underline-offset-2">
-              Use sample 7V-1042
-            </button>
+            <div class="flex items-center gap-3">
+              <button type="button" id="track-sample-btn" class="text-[11px] text-obsidian/70 hover:text-obsidian underline underline-offset-2">
+                Try 7V-1042
+              </button>
+              <button type="button" id="track-sample-btn-2" class="text-[11px] text-obsidian/70 hover:text-obsidian underline underline-offset-2">
+                Try 7V-1089
+              </button>
+            </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-2.5">
             <input
@@ -1781,78 +1950,7 @@
     </div>
   </div>
 
-  <!-- =======================================================================
-       6C. EDITORIAL JOURNAL ARTICLE READER MODAL (WITH READING PROGRESS BAR)
-       ======================================================================= -->
-  <div
-    id="blog-reader-backdrop"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="blog-reader-title"
-    class="fixed inset-0 z-50 modal-scrim backdrop-blur-[2px] flex items-center justify-center p-3 sm:p-6 overlay-hidden transition-opacity duration-300"
-  >
-    <article class="bg-alabaster border border-obsidian w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-[0_28px_64px_-16px_rgba(20,20,20,0.45)]">
-      <div class="px-6 sm:px-8 py-4 border-b border-obsidian flex items-center justify-between gap-4 bg-alabaster shrink-0">
-        <p id="blog-reader-meta" class="text-[10px] font-medium tracking-[0.16em] uppercase text-obsidian/65">
-          ATELIER JOURNAL · BRAND IDENTITY
-        </p>
-        <button
-          id="blog-reader-close"
-          type="button"
-          aria-label="Close journal entry"
-          class="w-10 h-10 -mr-2 flex items-center justify-center border border-transparent hover:border-obsidian text-obsidian text-lg transition-colors shrink-0"
-        >
-          ✕
-        </button>
-      </div>
-
-      <!-- Thin Reading Progress Bar Track -->
-      <div class="w-full h-[3px] bg-obsidian/15 shrink-0" aria-hidden="true">
-        <div id="blog-reading-progress" class="h-full bg-champagne transition-[width] duration-75" style="width: 0%;"></div>
-      </div>
-
-      <div id="blog-reader-body" class="p-6 sm:p-10 overflow-y-auto flex-1 space-y-6">
-        <div class="space-y-3 pb-6 border-b border-obsidian/20">
-          <h3 id="blog-reader-title" class="font-serif text-[32px] sm:text-[40px] leading-[1.1] font-normal text-obsidian text-balance">
-            Article Title
-          </h3>
-          <p id="blog-reader-byline" class="text-[12px] text-obsidian/65 tracking-[0.04em]">
-            By 7SEVENVII7 Editorial · 4 min read
-          </p>
-        </div>
-        <div id="blog-reader-content" class="space-y-5 text-[15px] leading-[1.8] text-obsidian/85">
-          <!-- Populated dynamically -->
-        </div>
-        <div id="blog-reader-checklist" class="border border-obsidian bg-taupe/20 p-5 space-y-2.5">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-
-      <div class="px-6 sm:px-8 py-4 border-t border-obsidian bg-alabaster flex items-center justify-between gap-4 shrink-0">
-        <button
-          id="blog-prev-btn"
-          type="button"
-          class="text-[11px] font-medium tracking-[0.14em] uppercase text-obsidian hover:opacity-65 py-2 whitespace-nowrap"
-        >
-          ← PREVIOUS ESSAY
-        </button>
-        <button
-          id="blog-shop-cta"
-          type="button"
-          class="border border-obsidian bg-obsidian text-alabaster px-4 py-2 text-[10px] font-medium tracking-[0.14em] uppercase hover:bg-[#2a2a2a] transition-colors whitespace-nowrap"
-        >
-          EXPLORE RELATED SYSTEMS
-        </button>
-        <button
-          id="blog-next-btn"
-          type="button"
-          class="text-[11px] font-medium tracking-[0.14em] uppercase text-obsidian hover:opacity-65 py-2 whitespace-nowrap"
-        >
-          NEXT ESSAY →
-        </button>
-      </div>
-    </article>
-  </div>
+  <!-- Secondary page #journal-page-view serves all full-context illustrated journal entries -->
 
   <!-- =======================================================================
        6D. ARCHITECTURAL FLOATING "BACK TO TOP" BUTTON
@@ -2136,10 +2234,36 @@
           date: 'Nov 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'Luxury service pricing relies on perceived precision long before the first lash is placed or serum applied. When an independent beauty studio pairs a curated Instagram feed with a generic third-party waiver link and mismatched clinic attire, clients experience subtle cognitive friction that caps what they are comfortable paying.',
-            'Cohesive visual identity removes that friction by anchoring every touchpoint in a single palette, typographic scale, and tonal voice. Clients infer operational rigor from aesthetic rigor: if your menu spacing, font hierarchy, and front-desk signage are immaculate, they naturally trust your clinical technique at a higher tier.',
-            'Independent founders who standardize their visual ecosystem consistently report smoother transitions when raising service menus by 15% to 25%. Rather than defending rates verbally, the studio environment itself substantiates the value.',
+          heroImage: './assets/aistudio/IMG_9215_459465d9.jpeg',
+          heroAlt: '7SEVENVII7SOLUTIONS brushed champagne gold crest framed in matte obsidian hairline',
+          heroCaption: 'Figure 01.01 — Consistent brand heraldry establishes value parity before a single service quote is presented.',
+          pullQuote: 'Clients infer clinical precision from aesthetic discipline: when every menu margin, intake flow, and staff sleeve aligns, higher pricing stops needing verbal defense.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_9214_ea6df30b.jpeg',
+              alt: '7SEVENVII7 brand typography, color architecture, and tagline specifications sheet',
+              caption: 'Plate 01 — Locking palette ratios (#F7F5F0 alabaster, #141414 obsidian, #C5B396 brushed brass) across screen and stationery.',
+            },
+            {
+              src: './src/assets/images/product_identity_kit_1795534617840.jpg',
+              alt: 'Open architectural brand book beside printed stationery cards and social template grid',
+              caption: 'Plate 01B — Translating digital identity templates directly into 350gsm tactile client touchpoints.',
+            },
+          ],
+          relatedProductIds: ['studio-identity-kit', 'pkg-identity-overhaul'],
+          sections: [
+            {
+              heading: '01. Perceived Precision Precedes Treatment',
+              body: 'Luxury service pricing relies on perceived precision long before the first lash is isolated or serum applied. When an independent beauty studio pairs a curated Instagram feed with a generic third-party waiver link and mismatched clinic attire, clients experience subtle cognitive friction that silently caps what they are comfortable paying.',
+            },
+            {
+              heading: '02. Closing Cognitive Gaps Across Touchpoints',
+              body: 'Cohesive visual identity removes that friction by anchoring every client handoff in one palette, typographic scale, and tonal voice. Clients infer operational rigor from aesthetic discipline: if your menu spacing, font hierarchy, and reception desk signage are immaculate, they naturally trust your technical skill at a higher tier.',
+            },
+            {
+              heading: '03. The 15–25% Menu Elevation Window',
+              body: 'Independent founders who standardize their visual ecosystem report noticeably smoother transitions when elevating service menus by 15% to 25%. Rather than defending hourly rates verbally during consultation, the studio architecture itself substantiates the rate.',
+            },
           ],
           checklist: [
             'Audit your Instagram bio link, booking confirmation emails, and printed menus side by side for font mismatches.',
@@ -2157,10 +2281,36 @@
           date: 'Nov 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'all',
-          paragraphs: [
-            'A studio brand does not live inside a logo file; it lives in the sequence of micro-impressions from discovery to rebooking. Most studio owners invest heavily in social media photography while neglecting the unglamorous middle steps: SMS intake reminders, waiting room seating, and checkout QR signs.',
-            'Conducting a 360-degree touchpoint audit means walking through your own booking flow as a stranger. Notice whether the typography on your liability waiver matches your threshold floor mat, and whether your treatment room linens complement the tones in your highlight covers.',
-            'Eliminating jarring transitions between digital discovery and physical arrival builds instant calm. When the suite looks and feels identical to the digital promise, first-time nervousness turns into lasting loyalty.',
+          heroImage: './assets/aistudio/IMG_9207_19df598f.png',
+          heroAlt: 'Architectural obsidian workstation featuring glass intake clipboard, matte organizer, and studio apron',
+          heroCaption: 'Figure 02.01 — Continuity between digital booking links and the physical front-desk workstation.',
+          pullQuote: 'A studio brand does not live inside a logo file; it lives in the unbroken sequence of eight micro-impressions between discovery and rebooking.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1315_6fcd10e0.jpeg',
+              alt: 'Matte black entrance floor mat with champagne studio lettering at stone doorway',
+              caption: 'Plate 02A — The physical threshold: replacing generic entry rugs with branded architectural welcome mats.',
+            },
+            {
+              src: './src/assets/images/showroom_reception_systems_1795534616105.jpg',
+              alt: 'Travertine reception counter with engraved acrylic QR block and intake stationery',
+              caption: 'Plate 02B — Desk monolith check-in replaces verbal Wi-Fi and policy reminders with quiet self-service.',
+            },
+          ],
+          relatedProductIds: ['luxury-client-bundle', 'acrylic-qr-block'],
+          sections: [
+            {
+              heading: '01. Beyond the Logo File',
+              body: 'A studio brand does not live inside an isolated graphic mark; it lives in the choreography of micro-impressions from first profile tap to post-treatment rebooking. Many studio owners invest heavily in portfolio photography while leaving the middle steps—confirmation texts, entrance doorway, and desk check-in—as afterthoughts.',
+            },
+            {
+              heading: '02. Walking Your Flow as a Stranger',
+              body: 'Conducting a 360-degree touchpoint audit means booking your own studio as an unfamiliar guest. Notice whether the typography on your digital liability waiver matches your threshold floor mat, and whether your treatment table linens share the warm stone neutrality of your Instagram highlights.',
+            },
+            {
+              heading: '03. Eliminating Arrival Friction',
+              body: 'Eliminating jarring transitions between digital promise and physical suite builds immediate calm. When the studio looks and feels identical to the feed that brought the guest in, first-visit hesitation converts directly into recurring retention.',
+            },
           ],
           checklist: [
             'List all 8 core touchpoints: Social Grid, Booking Site, Confirmation SMS, Entrance Mat, Intake Tablet, Uniform, Treatment Bed, Aftercare Card.',
@@ -2178,10 +2328,36 @@
           date: 'Nov 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'uniform',
-          paragraphs: [
-            'High-saturation trend colors age rapidly and visually compete with clinical skincare, nail artistry, and subtle brow tones. By contrast, a restrained neutral architecture—anchored in warm alabaster (#F7F5F0), stone taupe (#D8D0C5), and matte obsidian (#141414)—acts as a timeless gallery wall for your actual craft.',
-            'Muted architectural palettes also calm the nervous system. Clients entering a brow, lash, or injectable suite seek serenity and cleanliness; warm plaster neutrals feel inviting without ever tipping into sterile hospital white.',
-            'From a practical operations standpoint, disciplined neutrals prevent expensive textile and print waste. Towels, robes, uniforms, and business cards purchased this year remain visually seamless with releases three years from now.',
+          heroImage: './src/assets/images/showroom_uniform_atelier_1795534615224.jpg',
+          heroAlt: 'Warm travertine studio wardrobe showroom with cream heavyweight sweatshirts and tailored garments',
+          heroCaption: 'Figure 03.01 — Warm alabaster and stone taupe soften clinical cleanliness without chasing seasonal trend colors.',
+          pullQuote: 'Restrained architectural neutrals serve as a timeless gallery wall for your craft—and protect inventory from rapid visual obsolescence.',
+          inlineImages: [
+            {
+              src: './src/assets/images/product_waffle_robe_1795536572978.jpg',
+              alt: 'Cream honeycomb waffle cotton studio robe draped over honed travertine stone',
+              caption: 'Plate 03A — 420gsm unbleached cream waffle textiles stay consistent across multi-year reorders.',
+            },
+            {
+              src: './assets/aistudio/IMG_1327_38f7486a.jpeg',
+              alt: 'Textured cream treatment blanket layered beside matte black side table',
+              caption: 'Plate 03B — Calming client nervous systems through warm plaster contrast rather than stark hospital white.',
+            },
+          ],
+          relatedProductIds: ['waffle-studio-robe', 'treatment-bed-blanket'],
+          sections: [
+            {
+              heading: '01. Why High-Saturation Trends Age Rapidly',
+              body: 'Bright seasonal trend hues date quickly and visually compete with subtle skin undertones, pigment work, and delicate nail artistry. By contrast, a restrained neutral architecture—anchored in warm alabaster (#F7F5F0), stone taupe (#D8D0C5), and matte obsidian (#141414)—frames your technical work like a gallery.',
+            },
+            {
+              heading: '02. Nervous System Calm in Treatment Rooms',
+              body: 'Clients entering a lash, brow, or aesthetic nurse suite seek serenity alongside sanitation. Warm mineral neutrals signal both clinical hygiene and tactile warmth, avoiding the harsh sterility of cold blue-white clinics.',
+            },
+            {
+              heading: '03. Eliminating Textile & Print Obsolescence',
+              body: 'Operationally, neutral discipline protects capital. Facial towels, robes, desk blocks, and printed waivers ordered this quarter stay 100% cohesive with uniforms and expansions added two years from now.',
+            },
           ],
           checklist: [
             'Adopt the 60-30-10 rule: 60% calm background canvas, 30% structural stone surfaces, 10% obsidian/champagne focal points.',
@@ -2199,10 +2375,36 @@
           date: 'Oct 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'Typography is the silent voice of your business. Overly ornate brush scripts often diminish legibility on mobile screens and dilute clinical credibility, while raw system defaults feel rushed and uncurated.',
-            'An intentional pairing—such as a sculpted editorial serif for headlines paired with a crisp geometric sans-serif for pricing, specs, and intake fields—communicates both artistry and operational precision. The serif conveys heritage and taste; the sans ensures effortless scanning.',
-            'Equally critical is tabular alignment on price menus and tight tracking discipline on micro-labels. Consistent line-heights across menus, waivers, and gift cards signal mastery over small details.',
+          heroImage: './src/assets/images/product_signage_suite_1795534618146.jpg',
+          heroAlt: 'Printed cream cotton service menus and reception placards displaying serif and sans typography',
+          heroCaption: 'Figure 04.01 — High-contrast editorial serif headings balanced by geometric sans-serif pricing columns.',
+          pullQuote: 'A disciplined two-font system whispers quiet competence: the serif carries craft heritage while crisp sans-serif pricing reads in half a second.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1320_f6fd2a9a.jpeg',
+              alt: 'Structured cream client intake and liability waiver form with weighted brass pen',
+              caption: 'Plate 04A — Typographic grid hierarchy transforms complex clinical consent forms into calm reading.',
+            },
+            {
+              src: './assets/aistudio/IMG_9214_ea6df30b.jpeg',
+              alt: 'Studio visual guidelines sheet displaying wordmark tracking and tagline proportions',
+              caption: 'Plate 04B — Consistent letter-spacing rules keep print menus and mobile screens visually unified.',
+            },
+          ],
+          relatedProductIds: ['signage-qr-suite', 'intake-waiver-folio'],
+          sections: [
+            {
+              heading: '01. Typography as Silent Authority',
+              body: 'Overly ornate brush scripts hurt mobile legibility and weaken clinical credibility, whereas raw default sans fonts read rushed. Pairing an editorial display serif for headlines with a clean geometric sans-serif for pricing and specs communicates artistry and operational rigor simultaneously.',
+            },
+            {
+              heading: '02. Tabular Discipline on Service Menus',
+              body: 'Misaligned decimal columns and shifting micro-label sizes quietly undermine luxury perception. Using strict tabular numerals and standardized uppercase kickers ensures every price table scans effortlessly.',
+            },
+            {
+              heading: '03. Embroidery & Small-Scale Legibility',
+              body: 'Typeface selection must also survive physical production—meaning letters need open counters and clean stroke contrast whether printed at 8pt on an aftercare card or stitched onto 480gsm cotton sleeves.',
+            },
           ],
           checklist: [
             'Lock your brand system to a maximum of two font families across all digital and print assets.',
@@ -2220,10 +2422,36 @@
           date: 'Oct 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'uniform',
-          paragraphs: [
-            'Clients judge physical craftsmanship subconsciously by weight and surface resistance. A flimsy 100gsm flyer curls on a humid counter within a week, whereas a 350gsm cotton aftercare card or a 25mm solid cast acrylic QR monolith commands respect on contact.',
-            'Materiality extends to hospitality details: serving consultation tea in matte stoneware mugs and handing over a weighted brushed-brass pen for intake signatures turns routine paperwork into an intentional ritual.',
-            'Investing in durable architectural objects lowers replacement frequency while deepening sensory memory—clients remember how your studio felt in their hands.',
+          heroImage: './src/assets/images/product_acrylic_qr_block_1795534620585.jpg',
+          heroAlt: '25mm crystal-clear and smoked obsidian solid cast acrylic desk block with white laser engraving',
+          heroCaption: 'Figure 05.01 — Physical mass at front desk signals permanence and craftsmanship.',
+          pullQuote: 'In an industry defined by skilled human touch, the physical density of what you place in a client’s hand defines how they remember your brand.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1316_96c7f1f2.jpeg',
+              alt: 'Matte ceramic hospitality mugs paired with solid brushed brass rollerball pens',
+              caption: 'Plate 05A — Replacing disposable ballpoints and paper cups with stoneware and weighted brass.',
+            },
+            {
+              src: './src/assets/images/product_desk_organizer_1795536574565.jpg',
+              alt: '8mm matte-black cast acrylic 5-well workstation organizer on cream stone',
+              caption: 'Plate 05B — 8mm alcohol-resistant acrylic organizers preserve crisp edges through daily sanitation.',
+            },
+          ],
+          relatedProductIds: ['acrylic-qr-block', 'studio-mug-pen-set'],
+          sections: [
+            {
+              heading: '01. Trust Transferred Through Weight',
+              body: 'Clients judge physical standards subconsciously by weight and surface resistance. A thin flyer curls on a humid counter in days, whereas a 350gsm cotton card or a 25mm solid cast acrylic QR monolith commands respect on first touch.',
+            },
+            {
+              heading: '02. Consultation as Sensory Ritual',
+              body: 'Materiality elevates mundane studio habits: serving tea in heavy matte stoneware mugs and offering a balanced brushed-brass pen for intake signatures turns five minutes of paperwork into an intentional welcome ritual.',
+            },
+            {
+              heading: '03. Longevity Over Disposable Clutter',
+              body: 'Weighted cast acrylic trays and solid stoneware cost less over three years than flimsy plastic caddies that scratch and cloud after repeated hospital-grade disinfectant wipes.',
+            },
           ],
           checklist: [
             'Upgrade reception signage from thin laminated sheets to weighted cast acrylic or 350gsm uncoated cotton stock.',
@@ -2241,10 +2469,36 @@
           date: 'Oct 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'uniform',
-          paragraphs: [
-            'Practitioners are the focal point of every studio visit. When a team wears varied personal hoodies or boxy hospital scrubs, visual cohesion fractures—especially when artists appear in candid reel content or client mirror selfies.',
-            'Engineered studio uniforms in heavyweight 480gsm organic fleece, structured 300gsm tees, and tailored cotton poplin dress shirts solve both comfort and presentation. Dropped shoulders allow unrestricted arm movement for lash isolation and brow mapping while maintaining clean architectural drape.',
-            'Subtle tonal wrist-cuff or chest monograms reinforce ownership pride without turning staff into walking billboards.',
+          heroImage: './assets/aistudio/IMG_9211_086e5f23.png',
+          heroAlt: 'Studio practitioner wearing cream 480gsm fleece hoodie with custom champagne gold script chest embroidery',
+          heroCaption: 'Figure 06.01 — Tailored 480gsm studio hoodies unify practitioner comfort with architectural brand identity.',
+          pullQuote: 'Practitioners stand at the center of every appointment and every social reel—your uniform silhouette is your brand in motion.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_9209_155681a2.png',
+              alt: 'Folded cream 480gsm fleece hoodie featuring champagne gold chest embroidery and brass drawcord tips',
+              caption: 'Plate 06A — Custom champagne metallic threadwork and weighted brushed-brass cord hardware.',
+            },
+            {
+              src: './src/assets/images/product_mens_dress_shirt_1795536572492.jpg',
+              alt: 'Tailored cream cotton poplin studio dress shirt with tonal crest embroidery',
+              caption: 'Plate 06B — Multiple silhouettes—fleece pullovers and crisp poplin shirts—anchored in one color system.',
+            },
+          ],
+          relatedProductIds: ['embroidered-hoodie', 'heavyweight-crewneck'],
+          sections: [
+            {
+              heading: '01. Why Mismatched Attire Fractures Cohesion',
+              body: 'When a studio team wears personal hoodies or boxy clinic scrubs, visual harmony breaks down immediately—especially in candid client mirror photos and educational reels.',
+            },
+            {
+              heading: '02. Engineering 480gsm Studio Movement',
+              body: 'Dropped-shoulder 480gsm organic fleece hoodies, structured 300gsm tees, and concealed-placket poplin dress shirts provide unrestricted arm mobility for hours of lash isolation or injection work while holding crisp structure.',
+            },
+            {
+              heading: '03. Tonal Crest Restraint',
+              body: 'Placing tonal gold or champagne embroidery neatly at the chest or wrist cuff instills team pride and photographic distinction without turning practitioners into walking billboards.',
+            },
           ],
           checklist: [
             'Select breathable, high-GSM organic cottons that resist pigment dust and hold collar structure.',
@@ -2262,10 +2516,36 @@
           date: 'Oct 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'Medical aesthetics, permanent makeup, and lash services require thorough contraindication screening and legal release documentation. Yet poorly formatted, cramped waivers make clients skim blindly or feel overwhelmed right before treatment.',
-            'Well-designed intake architecture breaks personal details, allergy history, emergency contacts, and release clauses into scannable modules with generous line spacing. Clarity increases completion accuracy and protects practitioners from misunderstandings.',
-            'Delivering the identical form digitally via pre-appointment link and on matte cream stationery in-suite guarantees seamless onboarding regardless of client tech comfort.',
+          heroImage: './src/assets/images/product_client_bundle_1795534617630.jpg',
+          heroAlt: 'Digital tablet client intake interface beside printed alabaster consultation cards',
+          heroCaption: 'Figure 07.01 — Unified digital iPad check-in and printed consent stationery lower guest pre-treatment anxiety.',
+          pullQuote: 'Clear, calmly spaced consent architecture protects your license legally while reassuring clients that every detail of their safety has been anticipated.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1320_f6fd2a9a.jpeg',
+              alt: 'Clean client liability waiver form with signature line and weighted brass pen',
+              caption: 'Plate 07A — Generous whitespace separates medical screening questions from legal release clauses.',
+            },
+            {
+              src: './assets/aistudio/IMG_9207_19df598f.png',
+              alt: 'Obsidian workstation desk featuring glass intake clipboard and studio apron',
+              caption: 'Plate 07B — Glass and acrylic clipboards give analog intake checks a tactile luxury finish.',
+            },
+          ],
+          relatedProductIds: ['intake-waiver-folio', 'luxury-client-bundle'],
+          sections: [
+            {
+              heading: '01. Separating Screening from Legal Clauses',
+              body: 'Aesthetic nurses, lash artists, and PMU technicians rely on thorough contraindication logs. Cramming tiny legal paragraphs directly beside allergy checkboxes causes guests to skim blindly right before service.',
+            },
+            {
+              heading: '02. Calm Hierarchy on iPad & Clipboard',
+              body: 'Modular forms break guest contact fields, health history, and treatment acknowledgments into scannable bands with generous spacing—improving answer accuracy and guest trust.',
+            },
+            {
+              heading: '03. Seamless Remote & In-Suite Sync',
+              body: 'Delivering identical styling via pre-visit booking SMS links and in-room iPad PDFs ensures zero visual mismatch regardless of how a client checks in.',
+            },
           ],
           checklist: [
             'Separate intake questionnaires from legal release clauses using clear subheadings.',
@@ -2283,10 +2563,36 @@
           date: 'Sep 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'New business owners often feel compelled to fill every square inch of a flyer, booking page, or retail shelf with badges, starbursts, and redundant explanations. Visually, overcrowding communicates anxiety; negative space communicates certainty.',
-            'When a service menu leaves generous margins around eight clearly named treatments, clients read faster and convert with less decision fatigue. On social templates, whitespace frames macro lash and skin photography cleanly without graphic noise stealing attention.',
-            'Treat open space as an active structural material—just as essential to your studio identity as your logo.',
+          heroImage: './src/assets/images/showroom_everyday_carry_1795534614835.jpg',
+          heroAlt: 'Minimalist travertine retail ledge with generous negative space around studio tote and objects',
+          heroCaption: 'Figure 08.01 — Deliberate breathing room transforms ordinary shelving and menus into curated gallery displays.',
+          pullQuote: 'Visual overcrowding signals urgency and discounting; disciplined negative space communicates authority before a single word is read.',
+          inlineImages: [
+            {
+              src: './src/assets/images/product_identity_kit_1795534617840.jpg',
+              alt: 'Architectural brand book spread showcasing minimal grid spacing',
+              caption: 'Plate 08A — Generous inner margins guide the eye straight to headline offers and service tiers.',
+            },
+            {
+              src: './src/assets/images/product_signage_suite_1795534618146.jpg',
+              alt: 'Minimal printed policy cards framed in matte black desk holders',
+              caption: 'Plate 08B — Restraint in desk signage lets reception materials blend effortlessly with stone counters.',
+            },
+          ],
+          relatedProductIds: ['studio-identity-kit', 'signage-qr-suite'],
+          sections: [
+            {
+              heading: '01. Why Overcrowding Erodes Perceived Value',
+              body: 'Early-stage founders often pack every millimeter of flyers, booking sites, and retail displays with redundant badges and burst graphics. Visually, density shouts clearance; restraint signals mastery.',
+            },
+            {
+              heading: '02. Menus Built for Zero Decision Fatigue',
+              body: 'When a service list surrounds eight signature treatments with clean alabaster margins, guests comprehend differences faster and select flagship packages more confidently.',
+            },
+            {
+              heading: '03. Whitespace as Structural Material',
+              body: 'Treat open canvas as an active architectural material—on par with stone, brass, and cotton—across both your Instagram templates and reception walls.',
+            },
           ],
           checklist: [
             'Trim at least 25% of redundant filler copy from your printed service menus.',
@@ -2304,10 +2610,36 @@
           date: 'Sep 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'The client relationship does not end when payment clears. Poor retention caused by forgotten aftercare instructions hurts both client satisfaction and your studio’s portfolio reputation.',
-            'Replacing verbal reminders with a branded mobile aftercare link—paired with a pocket-sized printed card for the first visit—turns clinical guidance into a polished keepsake. Clear icon-led steps ("Keep dry 24 hours", "Oil-free cleanser", "Book 2–3 week refill") make compliance effortless.',
-            'When clients screenshot or share those cards with friends, your brand identity travels organically into new referral circles.',
+          heroImage: './assets/aistudio/IMG_1321_db66c7d9.jpeg',
+          heroAlt: 'Smartphone displaying cream mobile lash aftercare portal next to printed care cards',
+          heroCaption: 'Figure 09.01 — Mobile-ready SMS links paired with tactile care cards turn post-visit guidance into brand equity.',
+          pullQuote: 'Retention problems rarely begin in the treatment chair—they happen during the 48 hours after checkout when verbal advice fades.',
+          inlineImages: [
+            {
+              src: './src/assets/images/product_waffle_towels_1795536573665.jpg',
+              alt: 'Folded waffle facial and hand towels stacked cleanly on travertine shelf',
+              caption: 'Plate 09A — Consistent studio linen rituals reinforce hygiene and post-care attentiveness.',
+            },
+            {
+              src: './src/assets/images/product_client_bundle_1795534617630.jpg',
+              alt: 'Tablet and embossed cream studio cards ready at checkout station',
+              caption: 'Plate 09B — Pairing digital follow-up texts with tactile physical takeaways doubles compliance.',
+            },
+          ],
+          relatedProductIds: ['aftercare-mobile-suite', 'waffle-towel-set'],
+          sections: [
+            {
+              heading: '01. The First 48 Hours Determine Rebooking',
+              body: 'When retention drops from neglected cleansing or oil exposure, clients rarely blame their habits—they blame the service. Verbal reminders at checkout are routinely forgotten before dinner.',
+            },
+            {
+              heading: '02. Dual-Format Mobile & Print Guidance',
+              body: 'Replacing quick remarks with a clean mobile aftercare link—supported by a pocket-sized card on first visits—distills clinical preservation into four effortless steps.',
+            },
+            {
+              heading: '03. Organic Referral Sharing',
+              body: 'Clients routinely screenshot sleek mobile care guides or display clean printed cards on vanities, carrying your wordmark directly into new friend referrals.',
+            },
           ],
           checklist: [
             'Send an automated SMS link to your branded mobile aftercare screen immediately after checkout.',
@@ -2325,10 +2657,36 @@
           date: 'Sep 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'digital',
-          paragraphs: [
-            'A single intricate illustration logo rarely survives real-world studio operations. Thin hairlines vanish in embroidery on 480gsm fleece, and wide wordmarks turn illegible inside mobile booking avatars.',
-            'Resilient studio identities always pair two complementary marks: a full wide-tracked wordmark for headers, door mats, and packaging boxes, plus a compact interlocking monogram for uniform cuffs, wax seals, and acrylic QR blocks.',
-            'Testing vector scalability early ensures your brand stays crisp across every vendor—from digital printers to laser engravers.',
+          heroImage: './assets/aistudio/IMG_9204_b341f7b1.png',
+          heroAlt: 'Brushed champagne gold interlocking 7VII monogram and 7SEVENVII7SOLUTIONS wordmark on obsidian background',
+          heroCaption: 'Figure 10.01 — Interlocking geometric monograms retain knife-sharp proportions across metal, stitchwork, and glass.',
+          pullQuote: 'A durable studio brand pairs a wide editorial wordmark for headers and doorways with a compact interlocking monogram built for small hardware.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1319_38a5582e.jpeg',
+              alt: 'Close-up interlocking metallic gold chest monogram embroidered on cream fleece hoodie',
+              caption: 'Plate 10A — Clean stroke widths prevent thread bunching on heavyweight 480gsm studio cotton.',
+            },
+            {
+              src: './assets/aistudio/IMG_1315_6fcd10e0.jpeg',
+              alt: 'Matte obsidian threshold floor mat showcasing crisp champagne wordmark across entrance',
+              caption: 'Plate 10B — Full-width wordmark scaling cleanly across 36-inch entryway surfaces.',
+            },
+          ],
+          relatedProductIds: ['pkg-identity-overhaul', 'branded-floor-mat'],
+          sections: [
+            {
+              heading: '01. Why Single Intricate Logos Fail Operations',
+              body: 'Delicate floral emblems look charming at full screen width yet break apart instantly on 1.25-inch cuff embroidery, acrylic laser passes, or 16-pixel browser favicons.',
+            },
+            {
+              heading: '02. Dual-Mark Brand Architecture',
+              body: 'Resilient studios pair one authoritative tracked wordmark for headers, floor mats, and boxes with a compact interlocking monogram engineered for uniform cuffs, pen barrels, and social avatars.',
+            },
+            {
+              heading: '03. Production Stress-Testing Early',
+              body: 'Validating single-color monochrome readability (#141414 and #F7F5F0) upfront saves thousands in vendor revisions when scaling physical merchandise.',
+            },
           ],
           checklist: [
             'Maintain vector SVG/EPS files for both your horizontal wordmark and stacked monogram.',
@@ -2346,10 +2704,36 @@
           date: 'Aug 2026',
           author: '7SEVENVII7 Editorial',
           relatedFilter: 'uniform',
-          paragraphs: [
-            'Even well-crafted logos look disjointed if studio photography mixes cool fluorescent shadows with heavy warm filters. Consistent natural side-lighting and tactile stone or linen backdrops create immediate grid harmony.',
-            'Draping treatment tables in neutral cream waffle blankets and organizing tools in matte-black acrylic trays cleans up background clutter automatically—meaning every candid reel or client transformation photo looks editorial straight out of camera.',
-            'Authentic texture—skin pores, linen weave, travertine grain—builds far greater client trust than blurred airbrushed presets.',
+          heroImage: './assets/aistudio/IMG_9208_b61ebbc1.png',
+          heroAlt: 'Monogram cream hoodie styled flat-lay on dark stone slate beside brushed gold beauty tools',
+          heroCaption: 'Figure 11.01 — Consistent directional daylight and mineral backdrops turn routine worktables into editorial frames.',
+          pullQuote: 'Authentic material texture—natural skin, honeycomb cotton weave, raw stone grain—earns deeper client trust than heavy airbrushed filters.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_1327_38f7486a.jpeg',
+              alt: 'Cream waffle treatment blanket draped cleanly on aesthetic treatment bed',
+              caption: 'Plate 11A — Standardized honeycomb table textiles eliminate background distractions in result reels.',
+            },
+            {
+              src: './src/assets/images/product_desk_organizer_1795536574565.jpg',
+              alt: 'Matte black 5-well acrylic tool organizer arranged neatly on cream travertine',
+              caption: 'Plate 11B — Geometric matte station trays frame instruments cleanly during overhead close-ups.',
+            },
+          ],
+          relatedProductIds: ['acrylic-desk-organizer', 'treatment-bed-blanket'],
+          sections: [
+            {
+              heading: '01. Color Temperature Discipline',
+              body: 'Strong brand marks still look scattered if social photos alternate between harsh orange salon lighting and cool clinical shadows. Standardizing every suite lamp to 4000K–4500K balanced daylight creates instant visual continuity.',
+            },
+            {
+              heading: '02. Curated Background Props',
+              body: 'Draping beds in uniform cream honeycomb blankets and staging tools in 8mm matte-black organizers eliminates background noise automatically—so candid shots look curated straight from camera.',
+            },
+            {
+              heading: '03. Texture Over Airbrushing',
+              body: 'Modern aesthetic clients spot heavy skin-smoothing filters immediately. Crisp directional lighting over authentic linen, brass, and travertine communicates mastery and clinical honesty.',
+            },
           ],
           checklist: [
             'Establish one consistent neutral stone or alabaster backdrop surface for flat-lays and product shots.',
@@ -2366,11 +2750,37 @@
           readTime: '6 min read',
           date: 'Aug 2026',
           author: '7SEVENVII7 Editorial',
-          relatedFilter: 'all',
-          paragraphs: [
-            'Solo practitioners often accumulate "brand debt"—patched-together policies, different towel textures per room, and personal variations of aftercare advice. That debt stays hidden at one chair but breaks consistency the moment you hire a second technician.',
-            'Codifying your Brand Style Guide, uniform kit, linen weights, and digital intake templates into a repeatable Studio Operations Vault turns taste into infrastructure. New artists onboard with identical garments, identical station organizers, and identical client scripts.',
-            'Clients experience the same elevated standard regardless of which suite they book—unlocking true studio scalability.',
+          relatedFilter: 'packages',
+          heroImage: './assets/aistudio/IMG_9207_19df598f.png',
+          heroAlt: 'Complete obsidian and alabaster aesthetic workstation equipped with uniform apron, desk organizer, and clipboard',
+          heroCaption: 'Figure 12.01 — Codified hardware, linens, and intake systems let new suites replicate your flagship standard overnight.',
+          pullQuote: 'Standardizing uniforms, station hardware, and digital systems turns personal taste into repeatable infrastructure—unlocking effortless team growth.',
+          inlineImages: [
+            {
+              src: './assets/aistudio/IMG_9209_155681a2.png',
+              alt: 'Heavyweight cream embroidered team uniform hoodie folded neatly on obsidian backdrop',
+              caption: 'Plate 12A — Turnkey onboarding attire gives every new practitioner immediate brand alignment on Day One.',
+            },
+            {
+              src: './src/assets/images/product_waffle_towels_1795536573665.jpg',
+              alt: 'Standardized stack of 500gsm cream honeycomb waffle studio towels',
+              caption: 'Plate 12B — Locked room supply SKUs ensure identical client comfort across every treatment door.',
+            },
+          ],
+          relatedProductIds: ['pkg-startup-kit', 'pkg-evaluation-training'],
+          sections: [
+            {
+              heading: '01. What Studio Brand Debt Looks Like',
+              body: 'Independent founders often build quiet "brand debt": patched policy PDFs, mismatched room towels, and improvised client scripts. At one chair, intuition compensates; at three chairs, inconsistency erupts immediately.',
+            },
+            {
+              heading: '02. Turning Taste Into Repeatable SOPs',
+              body: 'Documenting garment weights, acrylic tray layouts, consultation checklists, and hospitality rituals inside one shared Studio Operations Vault turns founder taste into a teachable playbook.',
+            },
+            {
+              heading: '03. Identical Flagship Standards Across Doors',
+              body: 'When every new hire receives identical 480gsm attire, identical desk organizers, and identical aftercare templates, clients experience the exact same luxury standard regardless of which artist they book.',
+            },
           ],
           checklist: [
             'Document exact garment GSM, linen SKU, typography rules, and hex codes in a single brand dossier.',
@@ -2732,6 +3142,8 @@
       let activeBlogFilter = 'all';
       let showAllJournal = false;
       let activeBlogIndex = 0;
+      let pinnedBlogId = null;
+      let isJournalPageOpen = false;
       let activeQuickViewProduct = null;
       let qvSelectedSize = 'M';
       let qvQty = 1;
@@ -2811,24 +3223,24 @@
       const recentlyViewedTrack = document.getElementById('recently-viewed-track');
       const recentlyViewedCount = document.getElementById('recently-viewed-count');
 
+      const storefrontMain = document.getElementById('storefront-main');
+      const journalPageView = document.getElementById('journal-page-view');
+      const journalPageProgress = document.getElementById('journal-page-progress');
+      const journalPageBackBtn = document.getElementById('journal-page-back-btn');
+      const journalPageMeta = document.getElementById('journal-page-meta');
+      const journalPagePrevBtn = document.getElementById('journal-page-prev-btn');
+      const journalPageIndexBtn = document.getElementById('journal-page-index-btn');
+      const journalPageNextBtn = document.getElementById('journal-page-next-btn');
+      const journalPageDirectory = document.getElementById('journal-page-directory');
+      const journalPageDirectoryClose = document.getElementById('journal-page-directory-close');
+      const journalPageDirectoryGrid = document.getElementById('journal-page-directory-grid');
+      const journalPageArticle = document.getElementById('journal-page-article');
+
       const journalGrid = document.getElementById('journal-grid');
       const journalShowingLabel = document.getElementById('journal-showing-label');
       const journalToggleAllBtn = document.getElementById('journal-toggle-all-btn');
       const blogFilterTabs = document.querySelectorAll('.blog-filter-tab');
       const companyReviewsMarquee = document.getElementById('company-reviews-marquee');
-
-      const blogReaderBackdrop = document.getElementById('blog-reader-backdrop');
-      const blogReaderClose = document.getElementById('blog-reader-close');
-      const blogReadingProgress = document.getElementById('blog-reading-progress');
-      const blogReaderBody = document.getElementById('blog-reader-body');
-      const blogReaderMeta = document.getElementById('blog-reader-meta');
-      const blogReaderTitle = document.getElementById('blog-reader-title');
-      const blogReaderByline = document.getElementById('blog-reader-byline');
-      const blogReaderContent = document.getElementById('blog-reader-content');
-      const blogReaderChecklist = document.getElementById('blog-reader-checklist');
-      const blogPrevBtn = document.getElementById('blog-prev-btn');
-      const blogNextBtn = document.getElementById('blog-next-btn');
-      const blogShopCta = document.getElementById('blog-shop-cta');
       const backToTopBtn = document.getElementById('back-to-top-btn');
 
       const compareDock = document.getElementById('compare-dock');
@@ -3215,9 +3627,18 @@
           navbar.classList.remove('is-scrolled');
         }
 
-        // 2. Floating Architectural "Back to Top" Visibility
+        // 2. Secondary Journal Full-Context Reading Progress Bar
+        if (isJournalPageOpen && journalPageProgress) {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollY / docHeight) * 100)) : 100;
+          journalPageProgress.style.width = `${pct.toFixed(1)}%`;
+        }
+
+        // 3. Floating Architectural "Back to Top" Visibility
         if (backToTopBtn) {
-          const threshold = showroomSection ? Math.max(460, showroomSection.offsetHeight * 0.72) : 520;
+          const threshold = isJournalPageOpen
+            ? 320
+            : (showroomSection ? Math.max(460, showroomSection.offsetHeight * 0.72) : 520);
           const showTop = scrollY > threshold;
           backToTopBtn.classList.toggle('opacity-0', !showTop);
           backToTopBtn.classList.toggle('pointer-events-none', !showTop);
@@ -3227,8 +3648,8 @@
           backToTopBtn.classList.toggle('translate-y-0', showTop);
         }
 
-        // 3. Directional Horizontal Scroll Parallax on Catalog Rows (Row 1 LTR ->, Row 2 RTL <-)
-        if (!prefersReducedMotion) {
+        // 4. Directional Horizontal Scroll Parallax on Catalog Rows (Row 1 LTR ->, Row 2 RTL <-)
+        if (!prefersReducedMotion && !isJournalPageOpen) {
           const catalogRows = document.querySelectorAll('.catalog-row-anim[data-revealed="true"]');
           const vh = window.innerHeight || 800;
           catalogRows.forEach((row) => {
@@ -3905,6 +4326,9 @@
           const targetFilter = el.getAttribute('data-nav-filter');
           mobileNavPanel.classList.add('hidden');
           mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          if (isJournalPageOpen) {
+            closeJournalPage(false);
+          }
           setFilter(targetFilter, true);
         });
       });
@@ -3913,6 +4337,21 @@
         btn.addEventListener('click', () => {
           const targetFilter = btn.getAttribute('data-stage-cta');
           setFilter(targetFilter, true);
+        });
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', (e) => {
+          const href = anchor.getAttribute('href');
+          if (!href || href.startsWith('#/')) return;
+          if (isJournalPageOpen) {
+            e.preventDefault();
+            closeJournalPage(false);
+            const target = document.querySelector(href);
+            if (target) {
+              requestAnimationFrame(() => target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' }));
+            }
+          }
         });
       });
 
@@ -5117,10 +5556,17 @@
       trackBackdrop.addEventListener('click', (e) => {
         if (e.target === trackBackdrop) closeTrackModal();
       });
+      const trackSampleBtn2 = document.getElementById('track-sample-btn-2');
       trackSampleBtn.addEventListener('click', () => {
         trackOrderInput.value = '7V-1042';
         renderTrackStatus('7V-1042');
       });
+      if (trackSampleBtn2) {
+        trackSampleBtn2.addEventListener('click', () => {
+          trackOrderInput.value = '7V-1089';
+          renderTrackStatus('7V-1089');
+        });
+      }
       trackOrderForm.addEventListener('submit', (e) => {
         e.preventDefault();
         renderTrackStatus(trackOrderInput.value);
@@ -5150,70 +5596,173 @@
 
       atelierToastClose.addEventListener('click', hideToast);
 
+      newsletterEmail.addEventListener('input', () => {
+        if (!newsletterError.classList.contains('hidden')) {
+          newsletterError.classList.add('hidden');
+          newsletterEmail.setAttribute('aria-invalid', 'false');
+        }
+      });
+
       newsletterForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = newsletterEmail.value.trim();
+        if (!email) {
+          newsletterError.textContent = 'Please enter your studio email address.';
+          newsletterError.classList.remove('hidden');
+          newsletterEmail.setAttribute('aria-invalid', 'true');
+          newsletterEmail.focus();
+          return;
+        }
         const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!isValid) {
-          newsletterError.textContent = 'Please enter a valid studio email address.';
+          newsletterError.textContent = 'Please enter a valid email address (for example, studio@yourdomain.com).';
           newsletterError.classList.remove('hidden');
+          newsletterEmail.setAttribute('aria-invalid', 'true');
           newsletterEmail.focus();
           return;
         }
         newsletterError.classList.add('hidden');
+        newsletterEmail.setAttribute('aria-invalid', 'false');
         newsletterEmail.value = '';
         showToast(`Subscribed ${email} — early access to Drop 02 and Digital Vault updates confirmed.`);
       });
 
       /* ---------------------------------------------------------------------
-         8B. ATELIER JOURNAL (12 ESSAYS), BLOG READER & AUTO-SCROLLING REVIEWS
+         8B. ATELIER JOURNAL: COMPACT FOCUS+CONTEXT CARDS & SECONDARY FULL-PAGE VIEW
          --------------------------------------------------------------------- */
+      function applyRowFocusState(rowEl, focusedPostId) {
+        if (!rowEl) return;
+        const cards = rowEl.querySelectorAll('.journal-fc-card');
+        cards.forEach((card) => {
+          const cardId = card.getAttribute('data-fc-card');
+          const isTarget = focusedPostId !== null && cardId === focusedPostId;
+          const hasFocusInRow = focusedPostId !== null && Array.from(cards).some((c) => c.getAttribute('data-fc-card') === focusedPostId);
+          card.classList.toggle('is-focused', isTarget);
+          card.classList.toggle('is-shrunk', hasFocusInRow && !isTarget);
+          card.setAttribute('aria-expanded', String(isTarget));
+        });
+      }
+
+      function syncAllRowsFocus() {
+        document.querySelectorAll('.journal-fc-row').forEach((row) => {
+          const cards = Array.from(row.querySelectorAll('.journal-fc-card'));
+          const pinnedInRow = cards.find((c) => c.getAttribute('data-fc-card') === pinnedBlogId);
+          applyRowFocusState(row, pinnedInRow ? pinnedBlogId : null);
+        });
+      }
+
       function renderJournal() {
         const matching = activeBlogFilter === 'all'
           ? BLOG_POSTS
           : BLOG_POSTS.filter((post) => post.category === activeBlogFilter);
 
         const visible = (activeBlogFilter === 'all' && !showAllJournal)
-          ? matching.slice(0, 3)
+          ? matching.slice(0, 4)
           : matching;
 
         journalShowingLabel.textContent = `SHOWING ${visible.length} OF ${matching.length} ${matching.length === 1 ? 'ESSAY' : 'ESSAYS'}`;
         journalToggleAllBtn.classList.toggle('hidden', activeBlogFilter !== 'all');
-        journalToggleAllBtn.textContent = showAllJournal ? 'SHOW FEATURED 3 ESSAYS' : 'EXPLORE ALL 12 JOURNAL ENTRIES';
+        journalToggleAllBtn.textContent = showAllJournal ? 'SHOW FEATURED 4 ESSAYS' : 'EXPLORE ALL 12 JOURNAL ENTRIES';
 
-        journalGrid.innerHTML = visible.map((post) => `
-          <article class="flex flex-col bg-alabaster border border-obsidian p-6 sm:p-7 shadow-[0_12px_28px_-14px_rgba(20,20,20,0.14)] hover:shadow-[0_20px_40px_-14px_rgba(20,20,20,0.22)] hover:-translate-y-1 transition-all duration-300">
-            <div class="flex items-center justify-between gap-2 text-[10px] font-medium tracking-[0.15em] uppercase text-obsidian/60 mb-3">
-              <span>${post.number} · ${post.category}</span>
-              <span class="tabular-nums">${post.readTime}</span>
-            </div>
-            <button
-              type="button"
-              data-open-article="${post.id}"
-              class="text-left font-serif text-[23px] leading-[1.18] font-normal text-obsidian hover:opacity-70 transition-opacity mb-3"
-            >
-              ${post.title}
-            </button>
-            <p class="text-[13px] leading-[1.65] text-obsidian/75 mb-6">
-              ${post.excerpt}
-            </p>
-            <div class="mt-auto pt-4 border-t border-obsidian/15 flex items-center justify-between gap-3">
-              <span class="text-[11px] text-obsidian/55">${post.date}</span>
-              <button
-                type="button"
-                data-open-article="${post.id}"
-                class="text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian border-b border-obsidian pb-0.5 hover:opacity-65 whitespace-nowrap"
-              >
-                READ ESSAY →
-              </button>
-            </div>
-          </article>
+        // Chunk into rows of 4 compact cards so Focus + Context expands horizontally cleanly
+        const rows = [];
+        for (let i = 0; i < visible.length; i += 4) {
+          rows.push(visible.slice(i, i + 4));
+        }
+
+        journalGrid.innerHTML = rows.map((rowPosts, rowIdx) => `
+          <div class="journal-fc-row grid grid-cols-1 sm:grid-cols-2 lg:flex gap-4" data-fc-row="${rowIdx}">
+            ${rowPosts.map((post) => {
+              const isPinned = pinnedBlogId === post.id;
+              return `
+                <article
+                  data-fc-card="${post.id}"
+                  tabindex="0"
+                  aria-expanded="${isPinned}"
+                  class="journal-fc-card cursor-pointer bg-alabaster border border-obsidian overflow-hidden shadow-[0_10px_24px_-14px_rgba(20,20,20,0.16)] hover:shadow-[0_22px_44px_-14px_rgba(20,20,20,0.26)] ${isPinned ? 'is-focused' : ''}"
+                >
+                  <div class="fc-inner flex flex-col h-full">
+                    <!-- Compact Visual Plate -->
+                    <div class="fc-media h-32 w-full shrink-0 overflow-hidden border-b border-obsidian img-fallback-surface">
+                      <img
+                        src="${post.heroImage}"
+                        alt="${escapeHtml(post.heroAlt)}"
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    <!-- Editorial Copy Column -->
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between min-w-0">
+                      <div>
+                        <div class="flex items-center justify-between gap-2 text-[10px] font-medium tracking-[0.15em] uppercase text-obsidian/60 mb-2">
+                          <span class="truncate">${post.number}<span class="fc-category-meta"> · ${post.category}</span></span>
+                          <span class="fc-category-meta tabular-nums shrink-0">${post.readTime}</span>
+                        </div>
+                        <h3 class="fc-title font-serif text-[20px] leading-[1.2] font-normal text-obsidian text-balance mb-2">
+                          ${post.title}
+                        </h3>
+                      </div>
+
+                      <!-- Expanded Context Body (shown on hover or initial click) -->
+                      <div class="fc-expanded-detail space-y-4 pt-1">
+                        <p class="text-[13px] leading-[1.6] text-obsidian/80 line-clamp-3">
+                          ${post.excerpt}
+                        </p>
+                        <div class="pt-3 border-t border-obsidian/15 flex flex-wrap items-center justify-between gap-2">
+                          <span class="text-[11px] text-obsidian/55">${post.author} · ${post.date}</span>
+                          <button
+                            type="button"
+                            data-open-article-page="${post.id}"
+                            class="border border-obsidian bg-obsidian text-alabaster px-3.5 py-2 text-[10px] font-medium tracking-[0.14em] uppercase hover:bg-[#2a2a2a] transition-colors whitespace-nowrap"
+                          >
+                            READ FULL ESSAY →
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Compact Resting Cue -->
+                      <div class="fc-compact-cue pt-3 mt-3 border-t border-obsidian/15 flex items-center justify-between gap-2 text-[10px] tracking-[0.13em] uppercase text-obsidian/65">
+                        <span>${post.date}</span>
+                        <span class="text-obsidian font-medium">FOCUS + READ →</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              `;
+            }).join('')}
+          </div>
         `).join('');
+
+        // Bind Focus + Context listeners cleanly per row
+        journalGrid.querySelectorAll('.journal-fc-row').forEach((row) => {
+          const cards = row.querySelectorAll('.journal-fc-card');
+          cards.forEach((card) => {
+            const postId = card.getAttribute('data-fc-card');
+
+            card.addEventListener('mouseenter', () => {
+              applyRowFocusState(row, postId);
+            });
+
+            card.addEventListener('focusin', () => {
+              applyRowFocusState(row, postId);
+            });
+          });
+
+          row.addEventListener('mouseleave', () => {
+            const rowHasPin = Array.from(cards).some((c) => c.getAttribute('data-fc-card') === pinnedBlogId);
+            applyRowFocusState(row, rowHasPin ? pinnedBlogId : null);
+          });
+        });
+
+        syncAllRowsFocus();
       }
 
       blogFilterTabs.forEach((tab) => {
         tab.addEventListener('click', () => {
           activeBlogFilter = tab.getAttribute('data-blog-filter');
+          pinnedBlogId = null;
           blogFilterTabs.forEach((t) => {
             const isSel = t === tab;
             t.setAttribute('aria-selected', String(isSel));
@@ -5228,77 +5777,398 @@
 
       journalToggleAllBtn.addEventListener('click', () => {
         showAllJournal = !showAllJournal;
+        pinnedBlogId = null;
         renderJournal();
       });
 
-      function updateBlogReadingProgress() {
-        if (!blogReaderBody || !blogReadingProgress) return;
-        const maxScroll = blogReaderBody.scrollHeight - blogReaderBody.clientHeight;
-        const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (blogReaderBody.scrollTop / maxScroll) * 100)) : 100;
-        blogReadingProgress.style.width = `${pct.toFixed(1)}%`;
-      }
-
-      if (blogReaderBody) {
-        blogReaderBody.addEventListener('scroll', updateBlogReadingProgress, { passive: true });
-      }
-
-      function openArticleModal(articleId) {
-        const idx = BLOG_POSTS.findIndex((p) => p.id === articleId);
-        if (idx === -1) return;
-        activeBlogIndex = idx;
-        const post = BLOG_POSTS[idx];
-
-        blogReaderMeta.textContent = `ATELIER JOURNAL ${post.number} · ${post.category.toUpperCase()}`;
-        blogReaderTitle.textContent = post.title;
-        blogReaderByline.textContent = `By ${post.author} · ${post.date} · ${post.readTime}`;
-        blogReaderContent.innerHTML = post.paragraphs.map((p) => `<p>${p}</p>`).join('');
-        blogReaderChecklist.innerHTML = `
-          <p class="text-[10px] font-medium tracking-[0.16em] uppercase text-obsidian mb-2">
-            STUDIO IMPLEMENTATION CHECKLIST
-          </p>
-          <ul class="space-y-2 text-[13px] leading-[1.55] text-obsidian/85">
-            ${post.checklist.map((item) => `<li class="flex items-start gap-2.5"><span class="text-obsidian mt-0.5">▪</span><span>${item}</span></li>`).join('')}
-          </ul>
-        `;
-
-        blogShopCta.setAttribute('data-related-filter', post.relatedFilter || 'all');
-        blogReaderBackdrop.classList.remove('overlay-hidden');
-        blogReaderBackdrop.classList.add('overlay-visible');
-        if (blogReaderBody) blogReaderBody.scrollTop = 0;
-        if (blogReadingProgress) blogReadingProgress.style.width = '0%';
-        requestAnimationFrame(updateBlogReadingProgress);
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeArticleModal() {
-        blogReaderBackdrop.classList.add('overlay-hidden');
-        blogReaderBackdrop.classList.remove('overlay-visible');
-        document.body.style.overflow = '';
-      }
-
       journalGrid.addEventListener('click', (e) => {
-        const trigger = e.target.closest('[data-open-article]');
-        if (trigger) {
-          openArticleModal(trigger.getAttribute('data-open-article'));
+        const directOpen = e.target.closest('[data-open-article-page]');
+        if (directOpen) {
+          e.stopPropagation();
+          openJournalPage(directOpen.getAttribute('data-open-article-page'), true);
+          return;
+        }
+        const card = e.target.closest('[data-fc-card]');
+        if (!card) return;
+        const postId = card.getAttribute('data-fc-card');
+        if (pinnedBlogId === postId) {
+          // Second click on already-pinned card opens the full-context secondary page
+          openJournalPage(postId, true);
+        } else {
+          // Initial click puts card into Focus + Context mode (expanding it and shrinking siblings)
+          pinnedBlogId = postId;
+          syncAllRowsFocus();
         }
       });
 
-      blogReaderClose.addEventListener('click', closeArticleModal);
-      blogReaderBackdrop.addEventListener('click', (e) => {
-        if (e.target === blogReaderBackdrop) closeArticleModal();
+      journalGrid.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const card = e.target.closest('[data-fc-card]');
+          if (card && !e.target.closest('button')) {
+            e.preventDefault();
+            openJournalPage(card.getAttribute('data-fc-card'), true);
+          }
+        }
       });
-      blogPrevBtn.addEventListener('click', () => {
-        const prevIdx = (activeBlogIndex - 1 + BLOG_POSTS.length) % BLOG_POSTS.length;
-        openArticleModal(BLOG_POSTS[prevIdx].id);
-      });
-      blogNextBtn.addEventListener('click', () => {
-        const nextIdx = (activeBlogIndex + 1) % BLOG_POSTS.length;
-        openArticleModal(BLOG_POSTS[nextIdx].id);
-      });
-      blogShopCta.addEventListener('click', () => {
-        const target = blogShopCta.getAttribute('data-related-filter') || 'all';
-        closeArticleModal();
-        setFilter(target, true);
+
+      function renderJournalPageDirectory(currentId) {
+        if (!journalPageDirectoryGrid) return;
+        journalPageDirectoryGrid.innerHTML = BLOG_POSTS.map((p) => {
+          const isCurrent = p.id === currentId;
+          return `
+            <button
+              type="button"
+              data-jump-journal-id="${p.id}"
+              class="text-left border ${isCurrent ? 'border-obsidian bg-obsidian text-alabaster' : 'border-obsidian/40 bg-alabaster text-obsidian hover:border-obsidian'} p-3.5 flex flex-col justify-between gap-2 transition-colors"
+            >
+              <div class="flex items-center justify-between gap-2 text-[9px] tracking-[0.14em] uppercase opacity-75">
+                <span>${p.number} · ${p.category}</span>
+                <span class="tabular-nums">${p.readTime}</span>
+              </div>
+              <span class="font-serif text-[17px] leading-snug">${p.title}</span>
+            </button>
+          `;
+        }).join('');
+      }
+
+      function renderJournalPageArticle(post) {
+        if (!journalPageArticle) return;
+        const relatedProds = (post.relatedProductIds || [])
+          .map((id) => PRODUCTS.find((p) => p.id === id))
+          .filter(Boolean);
+        const siblingPosts = BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 3);
+        const plates = post.inlineImages || [];
+
+        journalPageMeta.textContent = `ATELIER JOURNAL · ISSUE ${post.number} / 12 · ${post.category.toUpperCase()}`;
+
+        journalPageArticle.innerHTML = `
+          <!-- Full-Context Editorial Hero Header -->
+          <header class="max-w-4xl mx-auto text-center space-y-5 pb-10">
+            <p class="text-[11px] font-medium tracking-[0.2em] uppercase text-obsidian/65">
+              ISSUE ${post.number} · ${post.category.toUpperCase()} · ${post.readTime.toUpperCase()}
+            </p>
+            <h1 class="font-serif text-[36px] sm:text-[50px] lg:text-[58px] leading-[1.06] font-normal text-obsidian text-balance">
+              ${post.title}
+            </h1>
+            <p class="text-[15px] sm:text-[17px] leading-[1.65] text-obsidian/75 max-w-2xl mx-auto">
+              ${post.excerpt}
+            </p>
+            <p class="text-[11px] tracking-[0.14em] uppercase text-obsidian/60 pt-1">
+              By ${post.author} · Published ${post.date}
+            </p>
+          </header>
+
+          <!-- Architectural Hero Photographic Plate -->
+          <figure class="mb-12 sm:mb-16 border border-obsidian bg-taupe/20">
+            <div class="aspect-[16/9] lg:aspect-[21/9] w-full overflow-hidden img-fallback-surface">
+              <img
+                src="${post.heroImage}"
+                alt="${escapeHtml(post.heroAlt)}"
+                referrerPolicy="no-referrer"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <figcaption class="px-4 sm:px-6 py-3 border-t border-obsidian/20 text-[11px] sm:text-[12px] text-obsidian/75 flex items-center justify-between gap-4">
+              <span>${post.heroCaption}</span>
+              <span class="hidden sm:inline tracking-[0.14em] uppercase text-[10px] text-obsidian/50 shrink-0">7SEVENVII7 ARCHIVE</span>
+            </figcaption>
+          </figure>
+
+          <!-- 2-Column Editorial Body + Sticky Implementation Sidebar -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            <!-- Left Prose & Inline Plates -->
+            <div class="lg:col-span-8 space-y-10">
+              ${post.sections[0] ? `
+                <section class="space-y-4">
+                  <h2 class="font-serif text-[28px] sm:text-[32px] leading-[1.15] font-normal text-obsidian">
+                    ${post.sections[0].heading}
+                  </h2>
+                  <p class="text-[16px] leading-[1.85] text-obsidian/85">
+                    ${post.sections[0].body}
+                  </p>
+                </section>
+              ` : ''}
+
+              ${plates[0] ? `
+                <figure class="border border-obsidian bg-taupe/15">
+                  <div class="aspect-[16/10] w-full overflow-hidden img-fallback-surface">
+                    <img
+                      src="${plates[0].src}"
+                      alt="${escapeHtml(plates[0].alt)}"
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <figcaption class="px-4 py-3 border-t border-obsidian/20 text-[12px] text-obsidian/75">
+                    ${plates[0].caption}
+                  </figcaption>
+                </figure>
+              ` : ''}
+
+              ${post.sections[1] ? `
+                <section class="space-y-4">
+                  <h2 class="font-serif text-[28px] sm:text-[32px] leading-[1.15] font-normal text-obsidian">
+                    ${post.sections[1].heading}
+                  </h2>
+                  <p class="text-[16px] leading-[1.85] text-obsidian/85">
+                    ${post.sections[1].body}
+                  </p>
+                </section>
+              ` : ''}
+
+              <!-- Architectural Pull Quote -->
+              <blockquote class="border border-obsidian bg-taupe/25 p-6 sm:p-8 space-y-2">
+                <p class="text-[10px] font-medium tracking-[0.18em] uppercase text-obsidian/60">
+                  KEY ARCHITECTURAL PRINCIPLE
+                </p>
+                <p class="font-serif text-[24px] sm:text-[28px] leading-[1.3] text-obsidian italic">
+                  “${post.pullQuote}”
+                </p>
+              </blockquote>
+
+              ${post.sections[2] ? `
+                <section class="space-y-4">
+                  <h2 class="font-serif text-[28px] sm:text-[32px] leading-[1.15] font-normal text-obsidian">
+                    ${post.sections[2].heading}
+                  </h2>
+                  <p class="text-[16px] leading-[1.85] text-obsidian/85">
+                    ${post.sections[2].body}
+                  </p>
+                </section>
+              ` : ''}
+
+              ${plates[1] ? `
+                <figure class="border border-obsidian bg-taupe/15">
+                  <div class="aspect-[16/10] w-full overflow-hidden img-fallback-surface">
+                    <img
+                      src="${plates[1].src}"
+                      alt="${escapeHtml(plates[1].alt)}"
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <figcaption class="px-4 py-3 border-t border-obsidian/20 text-[12px] text-obsidian/75">
+                    ${plates[1].caption}
+                  </figcaption>
+                </figure>
+              ` : ''}
+            </div>
+
+            <!-- Right Sticky Implementation Checklist & Related Objects -->
+            <aside class="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+              <div class="border border-obsidian bg-taupe/20 p-6 space-y-4">
+                <p class="text-[10px] font-medium tracking-[0.18em] uppercase text-obsidian">
+                  STUDIO IMPLEMENTATION CHECKLIST
+                </p>
+                <ul class="space-y-3 text-[13px] leading-[1.6] text-obsidian/85">
+                  ${post.checklist.map((item) => `
+                    <li class="flex items-start gap-2.5">
+                      <span class="text-champagne shrink-0 mt-0.5">▪</span>
+                      <span>${item}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+
+              ${relatedProds.length > 0 ? `
+                <div class="border border-obsidian bg-alabaster p-6 space-y-4">
+                  <div class="flex items-center justify-between gap-2 pb-2 border-b border-obsidian/15">
+                    <p class="text-[10px] font-medium tracking-[0.18em] uppercase text-obsidian">
+                      FEATURED IN THIS STUDY
+                    </p>
+                    <button type="button" data-journal-shop-filter="${post.relatedFilter || 'all'}" class="text-[10px] tracking-[0.12em] uppercase text-obsidian/70 hover:text-obsidian underline underline-offset-4">
+                      VIEW ALL
+                    </button>
+                  </div>
+                  <div class="space-y-4">
+                    ${relatedProds.map((prod) => `
+                      <div class="flex gap-3.5 pb-4 border-b border-obsidian/15 last:border-b-0 last:pb-0">
+                        <button type="button" data-journal-qv="${prod.id}" class="w-16 h-16 border border-obsidian shrink-0 overflow-hidden img-fallback-surface text-left">
+                          <img src="${prod.image}" alt="${prod.alt}" referrerPolicy="no-referrer" class="w-full h-full object-cover" />
+                        </button>
+                        <div class="min-w-0 flex-1 flex flex-col justify-between">
+                          <div>
+                            <button type="button" data-journal-qv="${prod.id}" class="text-left font-serif text-[17px] leading-snug text-obsidian hover:opacity-70">
+                              ${prod.name}
+                            </button>
+                            <p class="text-[11px] text-obsidian/65 tabular-nums">$${prod.price}</p>
+                          </div>
+                          <button type="button" data-journal-qv="${prod.id}" class="self-start text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian border-b border-obsidian pb-0.5 mt-1 hover:opacity-65">
+                            INSPECT PIECE →
+                          </button>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </aside>
+          </div>
+
+          <!-- Bottom Related Reading Strip -->
+          <section class="mt-16 pt-12 border-t border-obsidian">
+            <div class="flex flex-wrap items-end justify-between gap-4 mb-7">
+              <div>
+                <p class="text-[10px] font-medium tracking-[0.18em] uppercase text-obsidian/60 mb-1.5">
+                  CONTINUE READING
+                </p>
+                <h2 class="font-serif text-[30px] leading-tight font-normal text-obsidian">
+                  Further Notes from the Atelier
+                </h2>
+              </div>
+              <button
+                type="button"
+                data-journal-return-home="true"
+                class="border border-obsidian px-5 py-2.5 text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian hover:bg-obsidian hover:text-alabaster transition-colors"
+              >
+                ← RETURN TO SHOWROOM
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              ${siblingPosts.map((sib) => `
+                <article class="border border-obsidian bg-alabaster flex flex-col overflow-hidden hover:-translate-y-1 transition-transform duration-300">
+                  <button type="button" data-jump-journal-id="${sib.id}" class="aspect-[16/10] w-full overflow-hidden border-b border-obsidian img-fallback-surface text-left">
+                    <img src="${sib.heroImage}" alt="${escapeHtml(sib.heroAlt)}" referrerPolicy="no-referrer" loading="lazy" class="w-full h-full object-cover" />
+                  </button>
+                  <div class="p-5 flex-1 flex flex-col justify-between gap-4">
+                    <div>
+                      <p class="text-[10px] tracking-[0.14em] uppercase text-obsidian/60 mb-1.5">
+                        ${sib.number} · ${sib.category} · ${sib.readTime}
+                      </p>
+                      <button type="button" data-jump-journal-id="${sib.id}" class="text-left font-serif text-[21px] leading-snug text-obsidian hover:opacity-70">
+                        ${sib.title}
+                      </button>
+                    </div>
+                    <button type="button" data-jump-journal-id="${sib.id}" class="self-start text-[10px] font-medium tracking-[0.14em] uppercase text-obsidian border-b border-obsidian pb-0.5">
+                      READ ESSAY →
+                    </button>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      function openJournalPage(articleId, updateHash = true) {
+        const idx = BLOG_POSTS.findIndex((p) => p.id === articleId);
+        if (idx === -1) return;
+        activeBlogIndex = idx;
+        isJournalPageOpen = true;
+        const post = BLOG_POSTS[idx];
+
+        if (storefrontMain) storefrontMain.classList.add('hidden');
+        if (journalPageView) journalPageView.classList.remove('hidden');
+        if (journalPageDirectory) journalPageDirectory.classList.add('hidden');
+
+        renderJournalPageDirectory(post.id);
+        renderJournalPageArticle(post);
+
+        if (updateHash) {
+          try {
+            window.history.pushState({ journalId: post.id }, '', `#/journal/${post.id}`);
+          } catch {
+            window.location.hash = `#/journal/${post.id}`;
+          }
+        }
+
+        if (journalPageProgress) journalPageProgress.style.width = '0%';
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        requestAnimationFrame(updateScrollEffects);
+      }
+
+      function closeJournalPage(scrollToJournalSection = true, updateHash = true) {
+        isJournalPageOpen = false;
+        if (journalPageView) journalPageView.classList.add('hidden');
+        if (storefrontMain) storefrontMain.classList.remove('hidden');
+        if (journalPageProgress) journalPageProgress.style.width = '0%';
+
+        if (updateHash && window.location.hash.startsWith('#/journal/')) {
+          try {
+            window.history.pushState({}, '', '#journal');
+          } catch {
+            window.location.hash = '#journal';
+          }
+        }
+
+        if (scrollToJournalSection) {
+          const jEl = document.getElementById('journal');
+          if (jEl) {
+            requestAnimationFrame(() => jEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' }));
+          }
+        }
+        requestAnimationFrame(updateScrollEffects);
+      }
+
+      if (journalPageBackBtn) {
+        journalPageBackBtn.addEventListener('click', () => closeJournalPage(true, true));
+      }
+      if (journalPagePrevBtn) {
+        journalPagePrevBtn.addEventListener('click', () => {
+          const prevIdx = (activeBlogIndex - 1 + BLOG_POSTS.length) % BLOG_POSTS.length;
+          openJournalPage(BLOG_POSTS[prevIdx].id, true);
+        });
+      }
+      if (journalPageNextBtn) {
+        journalPageNextBtn.addEventListener('click', () => {
+          const nextIdx = (activeBlogIndex + 1) % BLOG_POSTS.length;
+          openJournalPage(BLOG_POSTS[nextIdx].id, true);
+        });
+      }
+      if (journalPageIndexBtn && journalPageDirectory) {
+        journalPageIndexBtn.addEventListener('click', () => {
+          journalPageDirectory.classList.toggle('hidden');
+        });
+      }
+      if (journalPageDirectoryClose && journalPageDirectory) {
+        journalPageDirectoryClose.addEventListener('click', () => {
+          journalPageDirectory.classList.add('hidden');
+        });
+      }
+      if (journalPageDirectoryGrid) {
+        journalPageDirectoryGrid.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-jump-journal-id]');
+          if (btn) openJournalPage(btn.getAttribute('data-jump-journal-id'), true);
+        });
+      }
+      if (journalPageArticle) {
+        journalPageArticle.addEventListener('click', (e) => {
+          const jumpBtn = e.target.closest('[data-jump-journal-id]');
+          if (jumpBtn) {
+            openJournalPage(jumpBtn.getAttribute('data-jump-journal-id'), true);
+            return;
+          }
+          const qvBtn = e.target.closest('[data-journal-qv]');
+          if (qvBtn) {
+            openQuickView(qvBtn.getAttribute('data-journal-qv'));
+            return;
+          }
+          const shopFilterBtn = e.target.closest('[data-journal-shop-filter]');
+          if (shopFilterBtn) {
+            const filterVal = shopFilterBtn.getAttribute('data-journal-shop-filter') || 'all';
+            closeJournalPage(false, true);
+            setFilter(filterVal, true);
+            return;
+          }
+          if (e.target.closest('[data-journal-return-home]')) {
+            closeJournalPage(true, true);
+          }
+        });
+      }
+
+      window.addEventListener('hashchange', () => {
+        const hash = window.location.hash;
+        if (hash.startsWith('#/journal/')) {
+          const id = hash.replace('#/journal/', '');
+          if (BLOG_POSTS.some((p) => p.id === id)) {
+            openJournalPage(id, false);
+          }
+        } else if (isJournalPageOpen) {
+          closeJournalPage(false, false);
+        }
       });
 
       function renderCompanyReviews() {
@@ -5339,9 +6209,7 @@
       // Escape key closes active modal or drawer
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (blogReaderBackdrop.classList.contains('overlay-visible')) {
-            closeArticleModal();
-          } else if (compareBackdrop.classList.contains('overlay-visible')) {
+          if (compareBackdrop.classList.contains('overlay-visible')) {
             closeCompareModal();
           } else if (qvBackdrop.classList.contains('overlay-visible')) {
             closeQuickView();
@@ -5351,6 +6219,8 @@
             closeWishlistDrawer();
           } else if (cartDrawer.classList.contains('drawer-open')) {
             closeCartDrawer();
+          } else if (isJournalPageOpen) {
+            closeJournalPage(true, true);
           }
         }
       });
@@ -5369,6 +6239,14 @@
       renderCompanyReviews();
       renderCompareDock();
       renderCart();
+
+      if (window.location.hash && window.location.hash.startsWith('#/journal/')) {
+        const initId = window.location.hash.replace('#/journal/', '');
+        if (BLOG_POSTS.some((p) => p.id === initId)) {
+          openJournalPage(initId, false);
+        }
+      }
+
       updateScrollEffects();
     })();
   </script>
